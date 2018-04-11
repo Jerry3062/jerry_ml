@@ -20,6 +20,6 @@ print(np.cumsum(b))
 # diff相邻数字的差
 print(np.diff(b))
 # clip 将超边界值变为边界值
-print(np.clip(b,5,9))
+print(np.clip(b, 5, 9))
 print(b)
-print(np.mean(b,axis=0))
+print(np.mean(b, axis=0))
