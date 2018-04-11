@@ -7,4 +7,7 @@ sns.set(style='ticks')
 
 tips = sns.load_dataset('tips')
 # print(tips)
-tips.to_csv("tips.csv")
+g = sns.FacetGrid(tips, col='sex', hue='smoker')
+g.map(plt.scatter, 'total_bill','tip')
+g.add_legend()
+plt.show()
