@@ -14,3 +14,4 @@ x = np.random.normal(size=100)
 sns.set_style('whitegrid')
 sns.distplot(x)
 plt.show()
+#ceshi
