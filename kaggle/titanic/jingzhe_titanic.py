@@ -209,19 +209,19 @@ param_test = {'classify__n_estimators': list(range(20, 50, 2)),
               'classify__max_depth': list(range(3, 60, 3))}
 gsearch = GridSearchCV(estimator=pipe, param_grid=param_test, scoring='roc_auc', cv=10)
 gsearch.fit(x, y)
-# print(gsearch.best_params_, gsearch.best_score_)
-# 2)训练模型
-select = SelectKBest(k=20)
-clf = RandomForestClassifier(random_state=10, warm_start=True,
-                             n_estimators=26,
-                             max_depth=6,
-                             max_features='sqrt')
-pipeline = make_pipeline(select, clf)
-pipeline.fit(x, y)
-# 3)交叉验证
-cv_score = cross_validation.cross_val_score(pipeline, x, y, cv=10)
-print('CV Score:mean-%.7g | Std - %.7g ' % (np.mean(cv_score), np.std(cv_score)))
-
-predictions = pipeline.predict(test)
-submission = pd.DataFrame({'PassengerId': PassengerId, 'Survived': predictions.astype(np.int32)})
-submission.to_csv("submission.csv", index=False)
+print(gsearch.best_params_, gsearch.best_score_)
+#2)训练模型
+# select = SelectKBest(k=20)
+# clf = RandomForestClassifier(random_state=10, warm_start=True,
+#                              n_estimators=26,
+#                              max_depth=6,
+#                              max_features='sqrt')
+# pipeline = make_pipeline(select, clf)
+# pipeline.fit(x, y)
+# # 3)交叉验证
+# cv_score = cross_validation.cross_val_score(pipeline, x, y, cv=10)
+# print('CV Score:mean-%.7g | Std - %.7g ' % (np.mean(cv_score), np.std(cv_score)))
+#
+# predictions = pipeline.predict(test)
+# submission = pd.DataFrame({'PassengerId': PassengerId, 'Survived': predictions.astype(np.int32)})
+# submission.to_csv("submission.csv", index=False)
