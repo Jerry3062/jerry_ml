@@ -112,6 +112,25 @@ all_data = all_data.drop(['Cabin', 'FareBand', ], axis=1)
 all_data = all_data[['Survived', 'Pclass', 'Sex', 'AgeLabel', 'FareLabel', 'Embarked', 'Title',
                      'FamilyLabel', 'TicketLabel']]
 
+
+def norm(i):
+    if i == 0:
+        return 'A'
+    elif i == 1:
+        return 'B'
+    elif i == 2:
+        return 'C'
+    elif i == 3:
+        return 'D'
+    elif i == 4:
+        return 'E'
+
+
+all_data['Pclass'] = all_data['Pclass'].apply(norm)
+all_data['AgeLabel'] = all_data['AgeLabel'].apply(norm)
+all_data['FareLabel'] = all_data['FareLabel'].apply(norm)
+all_data['FamilyLabel'] = all_data['FamilyLabel'].apply(norm)
+all_data['TicketLabel'] = all_data['TicketLabel'].apply(norm)
 all_data = pd.get_dummies(all_data)
 
 train = all_data[all_data['Survived'].notnull()]
@@ -132,20 +151,20 @@ print(x_test.shape)
 # gsearch.fit(x, y)
 # print(gsearch.best_params_, gsearch.best_score_)
 # 2)训练模型
-select = SelectKBest(k=16)
-clf = RandomForestClassifier(random_state=10, warm_start=True,
-                             n_estimators=28,
-                             max_depth=6,
-                             max_features='sqrt')
-pipeline = make_pipeline(select, clf)
-pipeline.fit(x, y)
+# select = SelectKBest(k=16)
+# clf = RandomForestClassifier(random_state=10, warm_start=True,
+#                              n_estimators=28,
+#                              max_depth=6,
+#                              max_features='sqrt')
+# pipeline = make_pipeline(select, clf)
+# pipeline.fit(x, y)
 # # 3)交叉验证
-cv_score = cross_validation.cross_val_score(pipeline, x, y, cv=10)
-print('CV Score:mean-%.7g | Std - %.7g ' % (np.mean(cv_score), np.std(cv_score)))
-
-predictions = pipeline.predict(test)
-submission = pd.DataFrame({'PassengerId': PassengerId, 'Survived': predictions.astype(np.int32)})
-submission.to_csv("submission.csv", index=False)
+# cv_score = cross_validation.cross_val_score(pipeline, x, y, cv=10)
+# print('CV Score:mean-%.7g | Std - %.7g ' % (np.mean(cv_score), np.std(cv_score)))
+#
+# predictions = pipeline.predict(test)
+# submission = pd.DataFrame({'PassengerId': PassengerId, 'Survived': predictions.astype(np.int32)})
+# submission.to_csv("submission.csv", index=False)
 
 # Decision Tree
 
@@ -155,3 +174,14 @@ submission.to_csv("submission.csv", index=False)
 # acc_decision_tree = round(decision_tree.score(x, y) * 100, 2)
 # submission = pd.DataFrame({'PassengerId': PassengerId, 'Survived': Y_pred.astype(np.int32)})
 # submission.to_csv("submission.csv", index=False)
+
+from pengliang.jerry_nn.neural_network import NeuralNetwork
+
+nn = NeuralNetwork([26, 100, 2])
+nn.fit(x, y)
+predictions = []
+for i in range(x_test.shape[0]):
+    o = nn.predict(x_test[i])
+    predictions.append(np.argmax(o))
+submission = pd.DataFrame({'PassengerId': PassengerId, 'Survived': predictions})
+submission.to_csv("submission.csv", index=False)
