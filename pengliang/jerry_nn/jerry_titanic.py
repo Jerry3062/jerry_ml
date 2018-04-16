@@ -11,8 +11,8 @@ from sklearn.grid_search import GridSearchCV, RandomizedSearchCV
 from sklearn.ensemble import RandomForestRegressor
 from sklearn.tree import DecisionTreeClassifier
 
-train = pd.read_csv('train.csv', dtype={'Age': np.float32})
-test = pd.read_csv('test.csv', dtype={'Age': np.float32})
+train = pd.read_csv('F:/dataset/titanic_data/train.csv', dtype={'Age': np.float32})
+test = pd.read_csv('F:/dataset/titanic_data/test.csv', dtype={'Age': np.float32})
 PassengerId = test['PassengerId']
 all_data = pd.concat([train, test], ignore_index=True)
 all_data['Title'] = all_data['Name'].apply(lambda x: x.split(",")[1].split(".")[0].strip())
@@ -184,4 +184,4 @@ for i in range(x_test.shape[0]):
     o = nn.predict(x_test[i])
     predictions.append(np.argmax(o))
 submission = pd.DataFrame({'PassengerId': PassengerId, 'Survived': predictions})
-submission.to_csv("submission.csv", index=False)
+submission.to_csv("F:/dataset/titanic_data/submission.csv", index=False)
