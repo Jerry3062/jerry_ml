@@ -82,3 +82,4 @@ with tf.Session() as sess:
     # Final Test
     print('Test Accuracy', sess.run(accuracy, feed_dict={x: mnist.test.images, y_label: mnist.test.labels,
                                                          keep_prob: 1}))
+    tf.summary.FileWriter("F:/graph", sess.graph)

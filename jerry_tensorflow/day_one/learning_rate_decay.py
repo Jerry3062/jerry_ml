@@ -31,3 +31,4 @@ with tf.Session() as sess:
         print("global_step_val", global_step_val)
         print("w_val", w_val)
         print("loss_val", loss_val)
+        tf.summary.FileWriter("F:/graph",sess.graph)
