@@ -15,3 +15,5 @@ sns.set_style('whitegrid')
 sns.distplot(x)
 plt.show()
 #ceshi
+
+# sns.countplot(Y_train) 多分类直方图
