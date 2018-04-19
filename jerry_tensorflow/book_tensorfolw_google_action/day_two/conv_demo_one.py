@@ -7,3 +7,4 @@ bias = tf.nn.bias_add(conv,biases)
 actived_conv = tf.nn.relu(bias)
 pool = tf.nn.max_pool(actived_conv,ksize=[1,3,3,1],
                       strides=[1,2,2,1],padding='SAME')
+
