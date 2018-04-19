@@ -46,17 +46,18 @@ def train(mnist):
     correct_prediction = tf.equal(tf.argmax(average_y, 1), tf.argmax(y_, 1))
     accuracy = tf.reduce_mean(tf.cast(correct_prediction, tf.float32))
     with tf.Session() as sess:
-        tf.initialize_all_variables().run()
-        validation_feed = {x: mnist.validation.images, y_: mnist.validation.labels}
-        test_feed = {x: mnist.test.images, y_: mnist.test.labels}
-        for i in range(TRAINING_STEPS):
-            if i % 1000 == 0:
-                validate_acc = sess.run(accuracy, feed_dict=validation_feed)
-                print('After %d training steps,validation accuracy using average model is %g' % (i, validate_acc))
-            xs, ys = mnist.train.next_batch(BATCH_SIZE)
-            sess.run(train_op, feed_dict={x: xs, y_: ys})
-        test_acc = sess.run(accuracy, feed_dict=test_feed)
-        print('After %d training steps,test accuracy using average model is %g' % (TRAINING_STEPS, test_acc))
+        with tf.device('/cpu:0'):
+            tf.global_variables_initializer().run()
+            validation_feed = {x: mnist.validation.images, y_: mnist.validation.labels}
+            test_feed = {x: mnist.test.images, y_: mnist.test.labels}
+            for i in range(TRAINING_STEPS):
+                if i % 1000 == 0:
+                    validate_acc = sess.run(accuracy, feed_dict=validation_feed)
+                    print('After %d training steps,validation accuracy using average model is %g' % (i, validate_acc))
+                xs, ys = mnist.train.next_batch(BATCH_SIZE)
+                sess.run(train_op, feed_dict={x: xs, y_: ys})
+            test_acc = sess.run(accuracy, feed_dict=test_feed)
+            print('After %d training steps,test accuracy using average model is %g' % (TRAINING_STEPS, test_acc))
 
 
 def main(argv=None):

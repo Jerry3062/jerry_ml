@@ -11,7 +11,6 @@ test_data_x = pd.read_csv("F:/dataset/mnist/test.csv")
 train_y = train_origin.label
 
 train = train_origin.drop(['label'], axis=1)
-print(train.shape)
 
 train_y = train_y.as_matrix()
 # 将label转为one_hot
@@ -96,28 +95,28 @@ sess = tf.Session(config=config)
 # 初始化变量，全局和局部
 init = tf.group(tf.global_variables_initializer(), tf.local_variables_initializer())
 sess.run(init)
-for i in range(400000):
-    item_index = i % 2100
+np.random.shuffle(train)
+validate_data = train[:10000]
+validate_x = validate_data[:, :-10]
+validate_y = validate_data[:, -10:]
+train = train[10000:]
+for i in range(600000):
+    item_index = i % 2000
     if item_index == 0:
-        random.shuffle(train)
+        np.random.shuffle(train)
         test_x = train[:, :-10]
-        vali_x = test_x[:10000]
         test_y = train[:, -10:]
-        vali_y = test_y[:10000]
     batch_x = test_x[item_index * 100:(item_index + 1) * 100]
     batch_y = test_y[item_index * 100:(item_index + 1) * 100]
     train_loss, train_op_ = sess.run([loss, train_op], {input_x: batch_x, output_y: batch_y})
     if i % 1000 == 0:
-        test_accuracy = sess.run(accuracy, {input_x: vali_x, output_y: vali_y})
-        print("Step%d,Train loss=%.7f,[Test accuracy=%.5f]" % (i, train_loss, test_accuracy))
+        test_accuracy = sess.run(accuracy, {input_x: validate_x, output_y: validate_y})
+        print("Step%d,Train loss=%.10f,[Test accuracy=%.5f]" % (i, train_loss, test_accuracy))
 
 predictions = np.asarray([], dtype=np.int64)
 for i in range(2800):
     batch_x = test_data_x[i * 100:(i + 1) * 100]
     prediction_data = sess.run(prediction, feed_dict={input_x: batch_x})
-    if (i == 0):
-        print(type(prediction_data))
-        print(prediction_data)
     predictions = np.hstack((predictions, prediction_data))
 submission = pd.DataFrame({'ImageId': np.arange(1, 28001), 'Label': predictions})
 submission.to_csv("submission.csv", index=False)
