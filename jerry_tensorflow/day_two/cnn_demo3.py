@@ -1,9 +1,8 @@
 import numpy as np
 import tensorflow as tf
-import matplotlib.pyplot as plt
-from tensorflow.examples.tutorials.mnist import input_data
 import random
 import pandas as pd
+
 
 train_origin = pd.read_csv("F:/dataset/mnist/train210000.csv", index_col=False)
 

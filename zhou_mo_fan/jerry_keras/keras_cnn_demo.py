@@ -1,4 +1,5 @@
 import numpy as np
+
 from keras.datasets import mnist
 from keras.utils import np_utils
 from keras.models import Sequential
@@ -59,7 +60,7 @@ model.add(Dense(1024))
 model.add(Activation('relu'))
 model.add(Dense(10))
 model.add(Activation('softmax'))
-adam = Adam(lr=1e-4)
+adam = Adam(lr=1e-3)
 model.compile(optimizer=adam,
               loss='categorical_crossentropy',
               metrics=['accuracy'])
