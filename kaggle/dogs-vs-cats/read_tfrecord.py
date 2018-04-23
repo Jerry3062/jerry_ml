@@ -1,34 +1,55 @@
-
 import tensorflow as tf
 import numpy as np
 import matplotlib.pyplot as plt
 import time
 import os
 
+filename_queue = tf.train.string_input_producer(['F:/dataset/dogs-vs-cats-resized/train.tfrecords'])
+reader = tf.TFRecordReader()
+_, serizalized_example = reader.read(filename_queue)
+features = tf.parse_single_example(serizalized_example,
+                                   features={
+                                       'label': tf.FixedLenFeature([], tf.int64),
+                                       'image_raw': tf.FixedLenFeature([], tf.string)
+                                   })
+image = tf.decode_raw(features['image_raw'], tf.uint8)
+label = tf.cast(features['label'], tf.int32)
+with tf.Session() as sess:
+    sess.run(tf.global_variables_initializer())
+    coord = tf.train.Coordinator()
+    threads = tf.train.start_queue_runners(coord=coord)
+    for i in range(20):
+        example,label= sess.run([image,label])
+        print(example.shape)
+        print(label)
+    coord.request_stop()
+    coord.join(threads)
 
-def read_and_decode(tf_records_file, batch_size):
-    filename_queue = tf.train.string_input_producer([tf_records_file])
+# def read_and_decode(tf_records_file, batch_size):
+#     filename_queue = tf.train.string_input_producer([tf_records_file])
+#
+#     reader = tf.TFRecordReader()
+#     _, serialized_example = reader.read(filename_queue)
+#     img_features = tf.parse_single_example(
+#         serialized_example,
+#         features={
+#             'label': tf.FixedLenFeature([], tf.int64),
+#             'image_raw': tf.FixedLenFeature([], tf.string)
+#         }
+#     )
+#     image = tf.decode_raw(img_features['image_raw'], tf.uint8)
+#     label = tf.cast(img_features['label'], tf.int32)
+#     image_batch, label_batch = tf.train.shuffle_batch([image, label],
+#                                                       batch_size=batch_size,
+#                                                       min_after_dequeue=100,
+#                                                       num_threads=64,
+#                                                       capacity=200)
+#     return image_batch, tf.reshape(label_batch, [batch_size])
+#
+# batch ,data = read_and_decode('F:/dataset/dogs-vs-cats-resized/train.tfrecords',100)
+# print(type(batch),type(data))
 
-    reader = tf.TFRecordReader()
-    _, serialized_example = reader.read(filename_queue)
-    img_features = tf.parse_single_example(
-        serialized_example,
-        features={
-            'label': tf.FixedLenFeature([], tf.int64),
-            'image_raw': tf.FixedLenFeature([], tf.string)
-        }
-    )
-    image = tf.decode_raw(img_features['image_raw'], tf.uint8)
-    label = tf.cast(img_features['label'], tf.int32)
-    image_batch, label_batch = tf.train.shuffle_batch([image, label],
-                                                      batch_size=batch_size,
-                                                      min_after_dequeue=100,
-                                                      num_threads=64,
-                                                      capacity=200)
-    return image_batch, tf.reshape(label_batch, [batch_size])
 
-batch ,data = read_and_decode('F:/dataset/dogs-vs-cats-resized/train.tfrecords',100)
-print(type(batch),type(data))
 
 
 # def onehot(labels):

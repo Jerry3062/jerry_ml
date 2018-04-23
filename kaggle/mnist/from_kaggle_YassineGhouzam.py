@@ -1,8 +1,12 @@
+# 在使用ImageDataGenerator的时候运行不成功
+
 import pandas as pd
 import numpy as np
 import matplotlib.pyplot as plt
 import matplotlib.image as mpimg
 import seaborn as sns
+import os
+import tensorflow as tf
 
 from sklearn.model_selection import train_test_split
 from sklearn.metrics import confusion_matrix
@@ -13,6 +17,13 @@ from keras.layers import Dense, Dropout, Flatten, Conv2D, MaxPool2D, BatchNormal
 from keras.optimizers import RMSprop
 from keras.preprocessing.image import ImageDataGenerator
 from keras.callbacks import ReduceLROnPlateau
+
+# 指定第一块GPU可用
+os.environ["CUDA_VISIBLE_DEVICES"] = "0"
+
+config = tf.ConfigProto()
+config.gpu_options.allow_growth = True  # 不全部占满显存, 按需分配
+sess = tf.Session(config=config)
 
 train = pd.read_csv('F:/dataset/mnist/train.csv')
 test = pd.read_csv('F:/dataset/mnist/test.csv')
@@ -53,7 +64,40 @@ learning_rate_reduction = ReduceLROnPlateau(monitor='val_acc',
                                             verbose=1,
                                             factor=0.5,
                                             min_lr=0.00001)
-epochs =10
+epochs = 2
 batch_size = 128
 
-model.fit(X_train,Y_train,batch_size=batch_size,epochs=epochs,validation_data=(X_val,Y_val),verbose=2)
+# history = model.fit(X_train, Y_train, batch_size=batch_size, epochs=epochs, validation_data=(X_val, Y_val), verbose=2)
+
+datagen = ImageDataGenerator(
+    featurewise_center=False,  # set input mean to 0 over the dataset
+    samplewise_center=False,  # set each sample mean to 0
+    featurewise_std_normalization=False,  # divide inputs by std of the dataset
+    samplewise_std_normalization=False,  # divide each input by its std
+    zca_whitening=False,  # apply ZCA whitening
+    rotation_range=2,  # randomly rotate images in the range (degrees, 0 to 180)
+    zoom_range=0.1,  # Randomly zoom image
+    width_shift_range=0.1,  # randomly shift images horizontally (fraction of total width)
+    height_shift_range=0.1,  # randomly shift images vertically (fraction of total height)
+    horizontal_flip=False,  # randomly flip images
+    vertical_flip=False)  # randomly flip images
+
+datagen.fit(X_train)
+
+history = model.fit_generator(datagen.flow(X_train, Y_train, batch_size=batch_size),
+                              epochs=epochs, validation_data=(X_val, Y_val),
+                              verbose=2, steps_per_epoch=X_train.shape[0],
+                              callbacks=[learning_rate_reduction])
+
+fig, ax = plt.subplots(2, 1)
+ax[0].plot(history.histroy['liss'], color='b', label='Training loss')
+ax[0].plot(history.histroy['val_loss'], color='r', label='Validation loss', axes=ax[0])
+legend=ax[0].legend(loc='best',shadow=True)
+
+ax[1].plot(history.histroy['acc'], color='b', label='Training accuracy')
+ax[1].plot(history.histroy['val_acc'], color='r', label='Validation accuracy')
+legend=ax[1].legend(loc='best',shadow=True)
+
+plt.show()
+
+
