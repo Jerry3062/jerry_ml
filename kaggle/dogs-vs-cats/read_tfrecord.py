@@ -19,7 +19,7 @@ with tf.Session() as sess:
     coord = tf.train.Coordinator()
     threads = tf.train.start_queue_runners(coord=coord)
     for i in range(20):
-        example,label= sess.run([image,label])
+        example, label = sess.run([image, label])
         print(example.shape)
         print(label)
     coord.request_stop()
@@ -48,8 +48,6 @@ with tf.Session() as sess:
 #
 # batch ,data = read_and_decode('F:/dataset/dogs-vs-cats-resized/train.tfrecords',100)
 # print(type(batch),type(data))
-
-
 
 
 # def onehot(labels):

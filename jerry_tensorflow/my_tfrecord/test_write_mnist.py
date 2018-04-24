@@ -8,6 +8,7 @@ x = train.drop(['label'], axis=1)
 del train
 x = x.as_matrix()
 y = y.as_matrix()
+x = np.array(x,dtype=np.uint8)
 
 filepath = 'F:/dataset/mnist/train.tfrecord'
 writer = tf.python_io.TFRecordWriter(filepath)
