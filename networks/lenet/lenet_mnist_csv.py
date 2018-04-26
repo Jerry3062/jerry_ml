@@ -4,6 +4,7 @@ import cv2
 import pandas as pd
 from keras.utils.np_utils import to_categorical
 import matplotlib.pyplot as plt
+import time
 
 train = pd.read_csv('F:/dataset/mnist/train.csv')
 test = pd.read_csv('F:/dataset/mnist/test.csv')
@@ -30,14 +31,22 @@ placeholder_x = tf.placeholder(tf.float32, [None, 784])
 input_x = tf.reshape(placeholder_x, [-1, 28, 28, 1]) / 255.
 placeholder_y = tf.placeholder(tf.float32, [None, 10])
 
-conv1 = tf.layers.conv2d(input_x, 6, [3, 3], 1, 'same', activation=tf.nn.relu)
+conv1 = tf.layers.conv2d(input_x, 6, [3, 3], 1, 'same')
+conv1 = tf.layers.batch_normalization(conv1)
+conv1 = tf.nn.relu(conv1)
+conv1 = tf.nn.lrn(conv1)
 pool1 = tf.layers.max_pooling2d(conv1, [2, 2], 2)
-conv2 = tf.layers.conv2d(pool1, 16, [3, 3], 1, 'same', activation=tf.nn.relu)
+conv2 = tf.layers.conv2d(pool1, 16, [3, 3], 1, 'same')
+conv2 = tf.layers.batch_normalization(conv2)
+conv2 = tf.nn.relu(conv2)
+conv2= tf.nn.lrn(conv2)
 pool2 = tf.layers.max_pooling2d(conv2, [2, 2], 2)
 
 flat = tf.reshape(pool2, [-1, 7 * 7 * 16])
 dense = tf.layers.dense(flat, 120, activation=tf.nn.relu)
+dense = tf.nn.dropout(dense, 0.5)
 dense2 = tf.layers.dense(dense, 84, activation=tf.nn.relu)
+# dense2 = tf.nn.dropout(dense2, 0.5)
 logits = tf.layers.dense(dense2, 10)
 predictions = tf.argmax(logits, axis=1)
 loss = tf.losses.softmax_cross_entropy(onehot_labels=placeholder_y, logits=logits)
@@ -50,12 +59,12 @@ with tf.Session() as sess:
     train_loss = []
     val_acc = []
     val_loss = []
-    for i in range(10000):
+    start_time = time.time()
+    for i in range(30001):
         index = i % 100
         batch_x = train_x[index * 320:(index + 1) * 320]
         batch_y = train_y[index * 320:(index + 1) * 320]
         sess.run(train_op, feed_dict={placeholder_x: batch_x, placeholder_y: batch_y})
-        sess
         if (i % 100 == 0):
             train_accur = sess.run(accuracy, feed_dict={placeholder_x: batch_x, placeholder_y: batch_y})
             train_acc.append(train_accur)
@@ -66,21 +75,31 @@ with tf.Session() as sess:
             val_los = sess.run(loss, feed_dict={placeholder_x: val_x, placeholder_y: val_y})
             val_loss.append(val_los)
             print('range%d   train_accur%.6f   train_loss%.6f' % (i, train_accur, train_los))
-            print('range%d   val_accur%.6f   val_loss%.6f' % (i, val_accur, val_los))
+            print('range%d   val_accur%.6f   val_loss%.6f\n' % (i, val_accur, val_los))
 
     # prediction = sess.run(predictions, feed_dict={placeholder_x: test})
     # print(prediction.shape)
     # submission = pd.DataFrame({'ImageId': np.arange(1, 28001), 'Label': prediction})
     # submission.to_csv("submission.csv", index=False)
+    file = open('lenet_mnist', 'a')
+    # file.write('local response normalizatidon lenet,cost %.3fseconds \n' % (time.time() - start_time))
+    file.write('bn two layer and lrn two layer one fc dropout lenet,cost %.3fseconds \n' % (time.time() - start_time))
+    file.write('range%d   train_accur%.6f   train_loss%.6f\n' % (i, train_accur, train_los))
+    file.write('range%d   val_accur%.6f   val_loss%.6f\n\n' % (i, val_accur, val_los))
     sess.close()
     iters = range(len(val_acc))
-    plt.figure()
-    # acc
+    # plt.figure()
+    plt.subplot(2, 1, 1)
+    #
     plt.plot(iters, train_acc, 'r', label='train acc')
-    # loss
-    plt.plot(iters, train_loss, 'g', label='train loss')
-    # val_acc
+    #
     plt.plot(iters, val_acc, 'b', label='val acc')
+    plt.grid(True)
+    plt.legend(loc="right")
+    plt.show()
+    plt.subplot(2, 1, 2)
+    # val_acc
+    plt.plot(iters, train_loss, 'g', label='train loss')
     # val_loss
     plt.plot(iters, val_loss, 'k', label='val loss')
     plt.grid(True)
