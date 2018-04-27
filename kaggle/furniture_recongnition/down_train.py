@@ -3,15 +3,15 @@ import os
 import json
 
 dir_path = 'F:/dataset/iMaterialist Challenge (Furniture) at FGVC5'
-images_path = 'F:/dataset/iMaterialist Challenge (Furniture) at FGVC5/validation'
-url_file_path = 'validation.json'
+images_path = 'F:/dataset/iMaterialist Challenge (Furniture) at FGVC5/train'
+url_file_path = 'train.json'
 url_file_abs_path = os.path.join(dir_path, url_file_path)
 with open(url_file_abs_path, 'rb') as test_file:
     test_dic = json.load(test_file)
-    images = test_dic['images'][6341:]
+    images = test_dic['images'][8633:]
     annotations = test_dic['annotations']
 
-    not_download = open('F:/dataset/iMaterialist Challenge (Furniture) at FGVC5/validation_not_download.txt', 'a')
+    not_download = open('F:/dataset/iMaterialist Challenge (Furniture) at FGVC5/train_not_download.txt', 'a')
     for item, annotation in zip(images, annotations):
         try:
             image_url = item['url'][0]

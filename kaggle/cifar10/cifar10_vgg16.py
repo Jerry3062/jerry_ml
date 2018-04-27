@@ -16,90 +16,90 @@ import numpy as np
 (x_train, y_train), (x_test, y_test) = cifar10.load_data()
 y_train = to_categorical(y_train, 10)
 y_test = to_categorical(y_test, 10)
-weight_decay = 0.0005
+weight_decay = 0.0006
 
-# model = Sequential()
-# model.add(Conv2D(64, (3, 3), padding='same', input_shape=x_train.shape[1:]
-#                  , kernel_regularizer=l2(weight_decay)))
-# model.add(Activation('relu'))
-# model.add(BatchNormalization())
-# model.add(Dropout(0.3))
-#
-# model.add(Conv2D(64, (3, 3), padding='same', kernel_regularizer=l2(weight_decay)))
-# model.add(Activation('relu'))
-# model.add(BatchNormalization())
-#
-# model.add(MaxPooling2D(pool_size=(2, 2)))
-#
-# model.add(Conv2D(128, (3, 3), padding='same', kernel_regularizer=l2(weight_decay)))
-# model.add(Activation('relu'))
-# model.add(BatchNormalization())
-# model.add(Dropout(0.4))
-#
-# model.add(Conv2D(128, (3, 3), padding='same', kernel_regularizer=l2(weight_decay)))
-# model.add(Activation('relu'))
-# model.add(BatchNormalization())
-#
-# model.add(MaxPooling2D(pool_size=(2, 2)))
-#
-# model.add(Conv2D(256, (3, 3), padding='same', kernel_regularizer=l2(weight_decay)))
-# model.add(Activation('relu'))
-# model.add(BatchNormalization())
-# model.add(Dropout(0.4))
-#
-# model.add(Conv2D(256, (3, 3), padding='same', kernel_regularizer=l2(weight_decay)))
-# model.add(Activation('relu'))
-# model.add(BatchNormalization())
-# model.add(Dropout(0.4))
-#
-# model.add(Conv2D(256, (3, 3), padding='same', kernel_regularizer=l2(weight_decay)))
-# model.add(Activation('relu'))
-# model.add(BatchNormalization())
-#
-# model.add(MaxPooling2D(pool_size=(2, 2)))
-#
-# model.add(Conv2D(512, (3, 3), padding='same', kernel_regularizer=l2(weight_decay)))
-# model.add(Activation('relu'))
-# model.add(BatchNormalization())
-# model.add(Dropout(0.4))
-#
-# model.add(Conv2D(512, (3, 3), padding='same', kernel_regularizer=l2(weight_decay)))
-# model.add(Activation('relu'))
-# model.add(BatchNormalization())
-# model.add(Dropout(0.4))
-#
-# model.add(Conv2D(512, (3, 3), padding='same', kernel_regularizer=l2(weight_decay)))
-# model.add(Activation('relu'))
-# model.add(BatchNormalization())
-#
-# model.add(MaxPooling2D(pool_size=(2, 2)))
-#
-# model.add(Conv2D(512, (3, 3), padding='same', kernel_regularizer=l2(weight_decay)))
-# model.add(Activation('relu'))
-# model.add(BatchNormalization())
-# model.add(Dropout(0.4))
-#
-# model.add(Conv2D(512, (3, 3), padding='same', kernel_regularizer=l2(weight_decay)))
-# model.add(Activation('relu'))
-# model.add(BatchNormalization())
-# model.add(Dropout(0.4))
-#
-# model.add(Conv2D(512, (3, 3), padding='same', kernel_regularizer=l2(weight_decay)))
-# model.add(Activation('relu'))
-# model.add(BatchNormalization())
-#
-# model.add(MaxPooling2D(pool_size=(2, 2)))
-# model.add(Dropout(0.5))
-#
-# model.add(Flatten())
-# model.add(Dense(512, kernel_regularizer=l2(weight_decay)))
-# model.add(Activation('relu'))
-# model.add(BatchNormalization())
-#
-# model.add(Dropout(0.5))
-#
-# model.add(Dense(10))
-# model.add(Activation('softmax'))
+model = Sequential()
+model.add(Conv2D(64, (3, 3), padding='same', input_shape=x_train.shape[1:]
+                 , kernel_regularizer=l2(weight_decay)))
+model.add(Activation('relu'))
+model.add(BatchNormalization())
+model.add(Dropout(0.3))
+
+model.add(Conv2D(64, (3, 3), padding='same', kernel_regularizer=l2(weight_decay)))
+model.add(Activation('relu'))
+model.add(BatchNormalization())
+
+model.add(MaxPooling2D(pool_size=(2, 2)))
+
+model.add(Conv2D(128, (3, 3), padding='same', kernel_regularizer=l2(weight_decay)))
+model.add(Activation('relu'))
+model.add(BatchNormalization())
+model.add(Dropout(0.4))
+
+model.add(Conv2D(128, (3, 3), padding='same', kernel_regularizer=l2(weight_decay)))
+model.add(Activation('relu'))
+model.add(BatchNormalization())
+
+model.add(MaxPooling2D(pool_size=(2, 2)))
+
+model.add(Conv2D(256, (3, 3), padding='same', kernel_regularizer=l2(weight_decay)))
+model.add(Activation('relu'))
+model.add(BatchNormalization())
+model.add(Dropout(0.4))
+
+model.add(Conv2D(256, (3, 3), padding='same', kernel_regularizer=l2(weight_decay)))
+model.add(Activation('relu'))
+model.add(BatchNormalization())
+model.add(Dropout(0.4))
+
+model.add(Conv2D(256, (3, 3), padding='same', kernel_regularizer=l2(weight_decay)))
+model.add(Activation('relu'))
+model.add(BatchNormalization())
+
+model.add(MaxPooling2D(pool_size=(2, 2)))
+
+model.add(Conv2D(512, (3, 3), padding='same', kernel_regularizer=l2(weight_decay)))
+model.add(Activation('relu'))
+model.add(BatchNormalization())
+model.add(Dropout(0.4))
+
+model.add(Conv2D(512, (3, 3), padding='same', kernel_regularizer=l2(weight_decay)))
+model.add(Activation('relu'))
+model.add(BatchNormalization())
+model.add(Dropout(0.4))
+
+model.add(Conv2D(512, (3, 3), padding='same', kernel_regularizer=l2(weight_decay)))
+model.add(Activation('relu'))
+model.add(BatchNormalization())
+
+model.add(MaxPooling2D(pool_size=(2, 2)))
+
+model.add(Conv2D(512, (3, 3), padding='same', kernel_regularizer=l2(weight_decay)))
+model.add(Activation('relu'))
+model.add(BatchNormalization())
+model.add(Dropout(0.4))
+
+model.add(Conv2D(512, (3, 3), padding='same', kernel_regularizer=l2(weight_decay)))
+model.add(Activation('relu'))
+model.add(BatchNormalization())
+model.add(Dropout(0.4))
+
+model.add(Conv2D(512, (3, 3), padding='same', kernel_regularizer=l2(weight_decay)))
+model.add(Activation('relu'))
+model.add(BatchNormalization())
+
+model.add(MaxPooling2D(pool_size=(2, 2)))
+model.add(Dropout(0.5))
+
+model.add(Flatten())
+model.add(Dense(512, kernel_regularizer=l2(weight_decay)))
+model.add(Activation('relu'))
+model.add(BatchNormalization())
+
+model.add(Dropout(0.5))
+
+model.add(Dense(10))
+model.add(Activation('softmax'))
 
 
 def normalize(X_train, X_test):
@@ -131,15 +131,28 @@ datagen = ImageDataGenerator(
     vertical_flip=False)  # randomly flip images
 # (std, mean, and principal components if ZCA whitening is applied).
 datagen.fit(x_train)
-opt = keras.optimizers.adam(0.0001)
-# model.compile(loss='categorical_crossentropy',
-#               optimizer=opt,
-#               metrics=['accuracy'])
-model = keras.models.load_model('my_vgg16.h5')
+
+learning_rate = 0.1
+lr_decay = 1e-6
+lr_drop = 3
+
+
+def lr_scheduler(epoch):
+    return learning_rate * (0.914 ** (epoch // lr_drop))
+
+
+reduce_lr = keras.callbacks.LearningRateScheduler(lr_scheduler)
+
+opt = keras.optimizers.sgd(learning_rate,0.9,decay=lr_decay,nesterov=True)
+model.compile(loss='categorical_crossentropy',
+              optimizer=opt,
+              metrics=['accuracy'])
+# model = keras.models.load_model('my_vgg16_adam_lrdecay.h5')
 history = model.fit_generator(datagen.flow(x_train, y_train, batch_size=256),
                               steps_per_epoch=x_train.shape[0] // 256,
-                              epochs=300, validation_data=(x_test, y_test), verbose=2)
-model.save('my_vgg16.h5')
+                              epochs=300, validation_data=(x_test, y_test),
+                              callbacks=[reduce_lr], verbose=2)
+model.save('my_vgg16_adam_lrdecay.h5')
 plt.plot()
 plt.plot(history.history['acc'])
 plt.plot(history.history['val_acc'])
@@ -158,9 +171,9 @@ plt.legend(['train', 'test'], loc='upper left')
 plt.show()
 file = open('cifar10_result', 'a')
 file.write(
-    '\nepochs %d sec_cost %.2f model vgg16 adam lr=0.001 datagen\n' % ( \
+    '\nepochs %d sec_cost %.2f model vgg16 momentum decay 0.914 ** (epoch // 3) datagen datagen\n' % ( \
         len(history.history['loss']), time.time() - start_time))
 file.write('tra_acc%.4f   tra_loss%.6f\n' % (history.history['acc'][-1], history.history['loss'][-1]))
 file.write('val_acc%.4f   val_loss%.6f\n' % (history.history['val_acc'][-1], history.history['val_loss'][-1]))
-file.write(str(history.history)+'\n')
+file.write(str(history.history) + '\n')
 file.close()
