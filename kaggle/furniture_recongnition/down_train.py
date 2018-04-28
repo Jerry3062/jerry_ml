@@ -8,7 +8,7 @@ url_file_path = 'train.json'
 url_file_abs_path = os.path.join(dir_path, url_file_path)
 with open(url_file_abs_path, 'rb') as test_file:
     test_dic = json.load(test_file)
-    images = test_dic['images'][8633:]
+    images = test_dic['images'][12742:]
     annotations = test_dic['annotations']
 
     not_download = open('F:/dataset/iMaterialist Challenge (Furniture) at FGVC5/train_not_download.txt', 'a')
