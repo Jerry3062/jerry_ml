@@ -17,3 +17,5 @@ print(df2.describe())
 print(df2.sort_index(axis=1, ascending=False))
 # 按照A列排序，升序
 print(df2.sort_index(by='A', ascending=True))
+
+print('fuck')
